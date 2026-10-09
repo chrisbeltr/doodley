@@ -9,9 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@uiw/react-color": "^2.10.3",
+    "html-react-parser": "^6.1.8",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "react-sketch-canvas": "^8.0.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
