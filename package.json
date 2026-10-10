@@ -10,17 +10,20 @@
   },
   "dependencies": {
     "@uiw/react-color": "^2.10.3",
-    "html-react-parser": "^6.1.8",
+    "immer": "^11.1.21",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-sketch-canvas": "^8.0.0"
+    "react-sketch-canvas": "^8.0.0",
+    "use-immer": "^0.11.0",
+    "ws": "^8.22.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/ws": "^8.18.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "tailwindcss": "^4",

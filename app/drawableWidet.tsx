@@ -1,6 +1,13 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
-import { ColorResult, Sketch } from "@uiw/react-color";
+import { ColorResult } from "@uiw/react-color";
+import dynamic from "next/dynamic";
+const Sketch = dynamic(
+  () => import("@uiw/react-color").then((lib) => lib.Sketch),
+  {
+    ssr: false,
+  },
+);
 
 type SendImage = (data: string) => void;
 
@@ -35,8 +42,7 @@ export function DrawableWidget({ sendImage }: { sendImage: SendImage }) {
     setDrawMode();
   };
   const exportCanvas = async () => {
-    const image = await canvasRef.current?.exportSvg();
-    console.log(image);
+    const image = await canvasRef.current?.exportImage("png");
     sendImage(image!);
   };
 
