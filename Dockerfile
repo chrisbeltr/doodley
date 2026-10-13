@@ -10,7 +10,7 @@ FROM node:${NODE_VERSION} AS dependencies
 WORKDIR /app
 
 # Copy package-related files first to leverage Docker's caching mechanism
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml* .npmrc* pnpm-workspace.yaml ./
 
 RUN corepack enable
 
@@ -79,6 +79,8 @@ RUN chown node:node .next
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+COPY --from=builder --chown=node:node /app/ws/server.mts ./
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 
 # If you want to persist the fetch cache generated during the build so that
 # cached responses are available immediately on startup, uncomment this line:
@@ -86,9 +88,3 @@ COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
 # Switch to non-root user for security best practices
 USER node
-
-# Expose port 3000 to allow HTTP traffic
-EXPOSE 6767
-
-# Start Next.js standalone server
-CMD ["node", "server.js"]
