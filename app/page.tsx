@@ -4,9 +4,11 @@ import { useImmer } from "use-immer";
 import { DrawableWidget } from "./drawableWidet";
 import { WebSocketProvider } from "./websocket";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Page() {
   const [images, setImages] = useImmer<string[]>([]);
+  const [count, setCount] = useState<number>(0);
 
   return (
     <WebSocketProvider
@@ -15,9 +17,15 @@ export default function Page() {
           draft.push(data);
         });
       }}
+      setCount={(count: number) => {
+        setCount(count);
+      }}
     >
       <div style={{ display: "flex", gap: "8px" }}>
-        <DrawableWidget />
+        <div>
+          Users Connected: {count}
+          <DrawableWidget />
+        </div>
         <div
           style={{
             display: "flex",
