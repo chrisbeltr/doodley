@@ -24,7 +24,7 @@ export default function Page() {
       setStatus={setStatus}
     >
       <div style={{ display: "flex", gap: "8px" }}>
-        <div>
+        <div style={{ flexShrink: 0 }}>
           <span>Users Connected: {count}</span>
           <span>Status: {status}</span>
           <DrawableWidget />

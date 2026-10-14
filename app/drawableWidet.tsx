@@ -47,7 +47,7 @@ export function DrawableWidget() {
   };
 
   return (
-    <div style={{ flexShrink: "0" }}>
+    <div>
       <ReactSketchCanvas
         width="500px"
         height="500px"
