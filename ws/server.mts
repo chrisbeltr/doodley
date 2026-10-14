@@ -1,5 +1,14 @@
 import { WebSocketServer, WebSocket } from "ws";
 
+process.on("SIGTERM", function () {
+  console.log("SIGTERM received, shutting down...");
+  process.exit(0);
+});
+process.on("SIGINT", function () {
+  console.log("SIGINT received, shutting down...");
+  process.exit(0);
+});
+
 interface CustomWebSocket extends WebSocket {
   isAlive?: boolean;
 }

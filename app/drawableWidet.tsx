@@ -1,7 +1,8 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useContext, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
 import { ColorResult } from "@uiw/react-color";
 import dynamic from "next/dynamic";
+import { WsContext } from "./websocket";
 const Sketch = dynamic(
   () => import("@uiw/react-color").then((lib) => lib.Sketch),
   {
@@ -9,9 +10,8 @@ const Sketch = dynamic(
   },
 );
 
-type SendImage = (data: string) => void;
-
-export function DrawableWidget({ sendImage }: { sendImage: SendImage }) {
+export function DrawableWidget() {
+  const socket = useContext(WsContext);
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
   const [backgroundColor, setBackgroundColor] = useState("#00000000");
   const [strokeColor, setStrokeColor] = useState("#000000ff");
@@ -43,11 +43,11 @@ export function DrawableWidget({ sendImage }: { sendImage: SendImage }) {
   };
   const exportCanvas = async () => {
     const image = await canvasRef.current?.exportImage("png");
-    sendImage(image!);
+    socket?.send(image!);
   };
 
   return (
-    <>
+    <div style={{ flexShrink: "0" }}>
       <ReactSketchCanvas
         width="500px"
         height="500px"
@@ -115,6 +115,6 @@ export function DrawableWidget({ sendImage }: { sendImage: SendImage }) {
       >
         Export
       </button>
-    </>
+    </div>
   );
 }

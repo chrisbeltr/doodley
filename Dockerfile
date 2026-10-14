@@ -50,7 +50,8 @@ RUN corepack enable
 # This caches the .next/cache directory across builds, but it also prevents
 # .next/cache/fetch-cache from being included in the final image, meaning
 # cached fetch responses from the build won't be available at runtime.
-RUN pnpm build
+RUN --mount=type=cache,target=/app/.netx/cache \
+pnpm build
 
 # ============================================
 # Stage 3: Run Next.js application
@@ -80,7 +81,7 @@ RUN chown node:node .next
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 COPY --from=builder --chown=node:node /app/ws/server.mts ./
-COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/node_modules/ws ./node_modules/ws
 
 # If you want to persist the fetch cache generated during the build so that
 # cached responses are available immediately on startup, uncomment this line:
