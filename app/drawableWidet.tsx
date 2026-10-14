@@ -43,7 +43,7 @@ export function DrawableWidget() {
   };
   const exportCanvas = async () => {
     const image = await canvasRef.current?.exportImage("png");
-    socket?.send(image!);
+    socket?.send(JSON.stringify({ type: "i", data: image! }));
   };
 
   return (

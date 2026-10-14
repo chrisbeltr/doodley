@@ -16,7 +16,7 @@ interface CustomWebSocket extends WebSocket {
 const port =
   process.env.NODE_ENV == "production"
     ? Number.parseInt(process.env["WS_PORT"]!)
-    : 56789;
+    : 8601;
 
 let connections = 0;
 
@@ -48,7 +48,9 @@ wss.on("connection", (ws: CustomWebSocket) => {
   });
 
   ws.on("message", (data) => {
-    sendImage(data.toString("utf-8"));
+    const payload = JSON.parse(data.toString("utf-8"));
+    if (payload.type == "p") ws.send(JSON.stringify({ type: "p", data: null }));
+    if (payload.type == "i") sendImage(payload.data);
   });
 
   ws.on("close", () => {
@@ -68,6 +70,6 @@ setInterval(() => {
     ws.isAlive = false;
     ws.ping();
   });
-}, 60000);
+}, 5000);
 
 console.log(`websocket listening on port ${port}`);

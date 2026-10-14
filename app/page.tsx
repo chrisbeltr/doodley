@@ -9,6 +9,7 @@ import { useState } from "react";
 export default function Page() {
   const [images, setImages] = useImmer<string[]>([]);
   const [count, setCount] = useState<number>(0);
+  const [status, setStatus] = useState<string>("disconnected");
 
   return (
     <WebSocketProvider
@@ -20,10 +21,12 @@ export default function Page() {
       setCount={(count: number) => {
         setCount(count);
       }}
+      setStatus={setStatus}
     >
       <div style={{ display: "flex", gap: "8px" }}>
         <div>
-          Users Connected: {count}
+          <span>Users Connected: {count}</span>
+          <span>Status: {status}</span>
           <DrawableWidget />
         </div>
         <div
