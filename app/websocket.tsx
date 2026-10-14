@@ -46,7 +46,7 @@ export function WebSocketProvider({
         }
         socket.alive = false;
         socket.send(JSON.stringify({ type: "p", data: null }));
-      }, 5000);
+      }, 1000);
       socket.addEventListener("open", () => {
         setStatus("connected");
         socket.alive = true;
