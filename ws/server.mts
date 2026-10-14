@@ -4,7 +4,14 @@ interface CustomWebSocket extends WebSocket {
   isAlive?: boolean;
 }
 
-const wss = new WebSocketServer({ port: 8640 });
+const port =
+  process.env.NODE_ENV == "production"
+    ? Number.parseInt(process.env["WS_PORT"]!)
+    : 56789;
+
+const wss = new WebSocketServer({
+  port: port,
+});
 
 wss.on("connection", (ws: CustomWebSocket) => {
   ws.isAlive = true;
@@ -30,4 +37,4 @@ setInterval(() => {
   });
 }, 60000);
 
-console.log(`websocket listening on port 8640`);
+console.log(`websocket listening on port ${port}`);
