@@ -15,7 +15,7 @@ export default function Page() {
     <WebSocketProvider
       addImage={(data: string) => {
         setImages((draft) => {
-          draft.push(data);
+          draft.unshift(data);
         });
       }}
       setCount={(count: number) => {
