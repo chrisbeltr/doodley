@@ -48,11 +48,11 @@ export function DrawableWidget() {
 
   const [mx, setMx] = useState(0);
   const [my, setMy] = useState(0);
+  const [visibility, setVisibility] = useState(false);
   return (
     <div>
       <div
         style={{
-          position: "relative",
           overflow: "hidden",
           width: "max-content",
           cursor: "none",
@@ -61,19 +61,22 @@ export function DrawableWidget() {
           setMx(ev.clientX);
           setMy(ev.clientY);
         }}
+        onPointerEnter={() => setVisibility(true)}
+        onPointerLeave={() => setVisibility(false)}
       >
         <div
           style={{
             width: strokeWidth,
             height: strokeWidth,
             position: "absolute",
-            top: my - 25.5556 - strokeWidth / 2,
-            left: mx - 7.77778 - strokeWidth / 2,
+            top: my - strokeWidth / 2,
+            left: mx - strokeWidth / 2,
             userSelect: "none",
             pointerEvents: "none",
             backdropFilter: "invert(1)",
             fontWeight: "bold",
             clipPath: "circle(50% at 50% 50%)",
+            visibility: visibility ? "visible" : "hidden",
           }}
         ></div>
         <ReactSketchCanvas
