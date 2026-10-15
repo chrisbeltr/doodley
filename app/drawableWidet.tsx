@@ -62,20 +62,20 @@ export function DrawableWidget() {
           setMy(ev.clientY);
         }}
       >
-        <p
+        <div
           style={{
-            margin: 0,
+            width: strokeWidth,
+            height: strokeWidth,
             position: "absolute",
-            top: my - 25.5556 - 9,
-            left: mx - 7.77778 - 4,
+            top: my - 25.5556 - strokeWidth / 2,
+            left: mx - 7.77778 - strokeWidth / 2,
             userSelect: "none",
             pointerEvents: "none",
-            color: "gray",
+            backdropFilter: "invert(1)",
             fontWeight: "bold",
+            clipPath: "circle(50% at 50% 50%)",
           }}
-        >
-          o
-        </p>
+        ></div>
         <ReactSketchCanvas
           width="500px"
           height="500px"
