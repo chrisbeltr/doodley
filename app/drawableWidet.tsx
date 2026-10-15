@@ -46,17 +46,46 @@ export function DrawableWidget() {
     socket?.send(JSON.stringify({ type: "i", data: image! }));
   };
 
+  const [mx, setMx] = useState(0);
+  const [my, setMy] = useState(0);
   return (
     <div>
-      <ReactSketchCanvas
-        width="500px"
-        height="500px"
-        canvasColor={backgroundColor}
-        strokeColor={strokeColor}
-        strokeWidth={strokeWidth}
-        eraserWidth={strokeWidth}
-        ref={canvasRef}
-      />
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          width: "max-content",
+          cursor: "none",
+        }}
+        onPointerMove={(ev) => {
+          setMx(ev.clientX);
+          setMy(ev.clientY);
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            position: "absolute",
+            top: my - 25.5556 - 9,
+            left: mx - 7.77778 - 4,
+            userSelect: "none",
+            pointerEvents: "none",
+            color: "gray",
+            fontWeight: "bold",
+          }}
+        >
+          o
+        </p>
+        <ReactSketchCanvas
+          width="500px"
+          height="500px"
+          canvasColor={backgroundColor}
+          strokeColor={strokeColor}
+          strokeWidth={strokeWidth}
+          eraserWidth={strokeWidth}
+          ref={canvasRef}
+        />
+      </div>
       <Sketch
         style={{ display: "inline-block" }}
         color={backgroundColor}
