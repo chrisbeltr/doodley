@@ -1,0 +1,135 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100dvh;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  height: 100%;
+  max-width: 1250px;
+  width: 100%;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.container-left {
+  flex-shrink: 0;
+}
+
+.drawable-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.tools-container {
+  padding: 8px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  display: flex;
+  gap: 5px;
+}
+
+.picker {
+  position: relative;
+  /* display: flex;
+  align-items: center;
+  gap: 5px; */
+}
+
+.swatch {
+  width: auto;
+  height: 28px;
+  border-radius: 5px;
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+button {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.cursor-width-input {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cursor-width-input input {
+  height: 100%;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.canvas-container {
+  cursor: none;
+}
+
+.canvas-cursor {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  backdrop-filter: invert(1);
+  font-weight: bold;
+  clip-path: circle(50% at 50% 50%);
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.server-stats {
+  padding: 2px 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.middle-bar {
+  height: 100%;
+  border-left: 1px solid lightgray;
+}
+
+.container-right {
+  overflow: hidden;
+  max-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-content: flex-start;
+}
+
+.drawing {
+  width: 225px;
+  height: 225px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}

@@ -1,33 +1,26 @@
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import { ReactSketchCanvas, ReactSketchCanvasRef } from "react-sketch-canvas";
-import { ColorResult } from "@uiw/react-color";
-import dynamic from "next/dynamic";
 import { WsContext } from "./websocket";
-const Sketch = dynamic(
-  () => import("@uiw/react-color").then((lib) => lib.Sketch),
-  {
-    ssr: false,
-  },
-);
+import { Picker } from "./picker";
 
 export function DrawableWidget() {
   const socket = useContext(WsContext);
   const canvasRef = useRef<ReactSketchCanvasRef>(null);
-  const [backgroundColor, setBackgroundColor] = useState("#00000000");
-  const [strokeColor, setStrokeColor] = useState("#000000ff");
-  const [strokeWidth, setStrokeWidth] = useState(8);
+  const [backgroundColor, setBackgroundColor] = useState("#ffffffff");
+  const [foregroundColor, setForegroundColor] = useState("#000000ff");
+  const [cursorWidth, setCursorWidth] = useState(8);
   const [mode, setMode] = useState<"draw" | "erase">("draw");
 
   type changeEvent = ChangeEvent<HTMLInputElement, HTMLInputElement>;
 
-  const changeBackgroundColor = (color: ColorResult) => {
-    setBackgroundColor(color.hexa);
+  const changeBackgroundColor = (color: string) => {
+    setBackgroundColor(color);
   };
-  const changeStrokeColor = (color: ColorResult) => {
-    setStrokeColor(color.hexa);
+  const changeForegroundColor = (color: string) => {
+    setForegroundColor(color);
   };
-  const changeStrokeWidth = (event: changeEvent) => {
-    setStrokeWidth(Number.parseInt(event.target.value));
+  const changeCursorWidth = (event: changeEvent) => {
+    setCursorWidth(Number.parseInt(event.target.value));
   };
   const setDrawMode = () => {
     canvasRef.current?.eraseMode(false);
@@ -41,6 +34,12 @@ export function DrawableWidget() {
     canvasRef.current?.clearCanvas();
     setDrawMode();
   };
+  const undoCanvas = () => {
+    canvasRef.current?.undo();
+  };
+  const redoCanvas = () => {
+    canvasRef.current?.redo();
+  };
   const exportCanvas = async () => {
     const image = await canvasRef.current?.exportImage("png");
     socket?.send(JSON.stringify({ type: "i", data: image! }));
@@ -50,13 +49,86 @@ export function DrawableWidget() {
   const [my, setMy] = useState(0);
   const [visibility, setVisibility] = useState(false);
   return (
-    <div>
+    <div className="drawable-container">
+      <div className="tools-container">
+        <Picker
+          label="bg color"
+          color={backgroundColor}
+          onChange={changeBackgroundColor}
+        ></Picker>
+        <Picker
+          label="fg color"
+          color={foregroundColor}
+          onChange={changeForegroundColor}
+        ></Picker>
+        <div className="cursor-width-input">
+          <span>cursor width</span>
+          <input
+            type="number"
+            min={1}
+            max={20}
+            value={cursorWidth}
+            required
+            onChange={(e) => {
+              changeCursorWidth(e);
+            }}
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setDrawMode();
+          }}
+          disabled={mode === "draw"}
+          aria-pressed={mode === "draw"}
+        >
+          Draw
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setEraseMode();
+          }}
+          disabled={mode === "erase"}
+          aria-pressed={mode === "erase"}
+        >
+          Erase
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            undoCanvas();
+          }}
+        >
+          Undo
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            redoCanvas();
+          }}
+        >
+          Redo
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            clearCanvas();
+          }}
+        >
+          Clear
+        </button>
+        <button
+          type="button"
+          onClick={async () => {
+            exportCanvas();
+          }}
+        >
+          Export
+        </button>
+      </div>
       <div
-        style={{
-          overflow: "hidden",
-          width: "max-content",
-          cursor: "none",
-        }}
+        className="canvas-container"
         onPointerMove={(ev) => {
           setMx(ev.clientX);
           setMy(ev.clientY);
@@ -65,88 +137,24 @@ export function DrawableWidget() {
         onPointerLeave={() => setVisibility(false)}
       >
         <div
+          className="canvas-cursor"
           style={{
-            width: strokeWidth,
-            height: strokeWidth,
-            position: "absolute",
-            top: my - strokeWidth / 2,
-            left: mx - strokeWidth / 2,
-            userSelect: "none",
-            pointerEvents: "none",
-            backdropFilter: "invert(1)",
-            fontWeight: "bold",
-            clipPath: "circle(50% at 50% 50%)",
+            width: cursorWidth,
+            height: cursorWidth,
+            top: my - cursorWidth / 2,
+            left: mx - cursorWidth / 2,
             visibility: visibility ? "visible" : "hidden",
           }}
         ></div>
         <ReactSketchCanvas
-          width="500px"
-          height="500px"
+          className="canvas"
           canvasColor={backgroundColor}
-          strokeColor={strokeColor}
-          strokeWidth={strokeWidth}
-          eraserWidth={strokeWidth}
+          strokeColor={foregroundColor}
+          strokeWidth={cursorWidth}
+          eraserWidth={cursorWidth}
           ref={canvasRef}
         />
       </div>
-      <Sketch
-        style={{ display: "inline-block" }}
-        color={backgroundColor}
-        onChange={(color) => {
-          changeBackgroundColor(color);
-        }}
-      />
-      <Sketch
-        style={{ display: "inline-block" }}
-        color={strokeColor}
-        onChange={(color) => {
-          changeStrokeColor(color);
-        }}
-      />
-      <input
-        type="number"
-        min={1}
-        max={20}
-        value={strokeWidth}
-        required
-        onChange={(e) => {
-          changeStrokeWidth(e);
-        }}
-      />
-      <button
-        type="button"
-        onClick={() => {
-          setDrawMode();
-        }}
-        aria-pressed={mode === "draw"}
-      >
-        Draw
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setEraseMode();
-        }}
-        aria-pressed={mode === "erase"}
-      >
-        Erase
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          clearCanvas();
-        }}
-      >
-        Clear
-      </button>
-      <button
-        type="button"
-        onClick={async () => {
-          exportCanvas();
-        }}
-      >
-        Export
-      </button>
     </div>
   );
 }

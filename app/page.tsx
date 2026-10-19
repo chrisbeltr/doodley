@@ -23,26 +23,22 @@ export default function Page() {
       }}
       setStatus={setStatus}
     >
-      <div style={{ display: "flex", gap: "8px" }}>
-        <div style={{ flexShrink: 0 }}>
-          <span>Users Connected: {count}</span>
-          <span>Status: {status}</span>
+      <div className="container">
+        <div className="container-left">
           <DrawableWidget />
+          <div className="server-stats">
+            <span>Users Connected: {count}</span>
+            <span>Status: {status}</span>
+          </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "2px",
-            alignContent: "flex-start",
-          }}
-        >
+        <div className="middle-bar"></div>
+        <div className="container-right">
           {images.map((img, idx) => {
             return (
               <Image
-                style={{ border: "1px solid black" }}
-                width={200}
-                height={200}
+                className="drawing"
+                width={1}
+                height={1}
                 src={img}
                 alt="piece from internet user"
                 key={idx}
