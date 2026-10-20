@@ -128,7 +128,6 @@ button {
     var(--drawing-length) * var(--columns) + var(--container-gap) *
       (var(--columns) - 1) + 8px
   );
-  container-name: container-right;
   padding: 8px 8px 8px 0;
   overflow: hidden;
   max-height: 100%;
