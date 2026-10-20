@@ -38,6 +38,8 @@ body {
   margin-left: auto;
   font-size: 5rem;
   text-box: trim-both ex alphabetic;
+  user-select: none;
+  pointer-events: none;
 }
 
 .drawable-container {
@@ -84,6 +86,7 @@ body {
 button {
   border: 1px solid lightgray;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .cursor-width-input {
