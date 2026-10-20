@@ -5,6 +5,9 @@ import { DrawableWidget } from "./drawableWidet";
 import { WebSocketProvider } from "./websocket";
 import Image from "next/image";
 import { useState } from "react";
+import { Kranky } from "next/font/google";
+
+const kranky = Kranky({ weight: "400", subsets: ["latin"] });
 
 export default function Page() {
   const [images, setImages] = useImmer<string[]>([]);
@@ -25,6 +28,7 @@ export default function Page() {
     >
       <div className="container">
         <div className="container-left">
+          <div className={`app-name ${kranky.className}`}>doodley</div>
           <DrawableWidget />
           <div className="server-stats">
             <span>Users Connected: {count}</span>
