@@ -82,7 +82,7 @@ export function DrawableWidget() {
           disabled={mode === "draw"}
           aria-pressed={mode === "draw"}
         >
-          Draw
+          Brush
         </button>
         <button
           type="button"
@@ -92,7 +92,7 @@ export function DrawableWidget() {
           disabled={mode === "erase"}
           aria-pressed={mode === "erase"}
         >
-          Erase
+          Eraser
         </button>
         <button
           type="button"
@@ -124,7 +124,7 @@ export function DrawableWidget() {
             exportCanvas();
           }}
         >
-          Export
+          Submit
         </button>
       </div>
       <div
