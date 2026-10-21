@@ -86,7 +86,16 @@ body {
 button {
   border: 1px solid lightgray;
   border-radius: 4px;
+  background-color: white;
+}
+
+button:hover {
   cursor: pointer;
+  background-color: #eee;
+}
+
+button:disabled, button:active {
+  background-color: #ccc;
 }
 
 .cursor-width-input {
